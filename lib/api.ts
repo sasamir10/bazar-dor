@@ -113,3 +113,39 @@ export async function getProductsByCategory(slug: string): Promise<Product[]> {
         return [];
     }
 }
+
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+    try {
+        // Find the product ID using its slug
+        const products = await getProducts();
+
+        const matchedProduct = products.find(
+            (product) => product.slug === slug,
+        );
+
+        if (!matchedProduct) {
+            return null;
+        }
+
+        // Fetch complete product details using its ID
+        const response = await fetch(
+            `${API_BASE_URL}/products/${matchedProduct.id}`,
+            { next: { revalidate: 300 } },
+        );
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const data: unknown = await response.json();
+
+        if (!data || typeof data !== "object") {
+            return null;
+        }
+
+        return data as Product;
+    } catch (error) {
+        console.error("Product details fetching failed:", error);
+        return null;
+    }
+}
