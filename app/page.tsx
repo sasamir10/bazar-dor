@@ -1,10 +1,13 @@
+import { Suspense } from "react";
+
 import { AllProductsSection } from "@/components/home/all-products-section";
 import { HeroSection } from "@/components/home/hero-section";
+import { HomeProductsSkeleton } from "@/components/home/home-products-skeleton";
 import { PriceChangeSection } from "@/components/home/price-change-section";
 
 import { getProducts } from "@/lib/api";
 
-export default async function Home() {
+async function HomeProductSections() {
     const products = await getProducts();
 
     const topRisers = products
@@ -18,9 +21,7 @@ export default async function Home() {
         .slice(0, 6);
 
     return (
-        <main className="flex-1">
-            <HeroSection />
-
+        <>
             <PriceChangeSection
                 title="আজ দাম বেড়েছে ▲"
                 subtitle="যেসব পণ্যের দাম আজ সবচেয়ে বেশি বেড়েছে।"
@@ -34,6 +35,18 @@ export default async function Home() {
             />
 
             <AllProductsSection products={products} />
+        </>
+    );
+}
+
+export default function Home() {
+    return (
+        <main className="flex-1">
+            <HeroSection />
+
+            <Suspense fallback={<HomeProductsSkeleton />}>
+                <HomeProductSections />
+            </Suspense>
         </main>
     );
 }

@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { PriceTicker } from "@/components/layout/price-ticker";
 import { SiteChromeVisibility } from "@/components/layout/site-chrome-visibility";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -17,8 +18,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <body className="min-h-full flex flex-col">
                 <SiteChromeVisibility>
                     <>
-                        <Navbar />
-                        <PriceTicker />
+                        <Suspense
+                            fallback={
+                                <div className="h-20 animate-pulse bg-white" />
+                            }
+                        >
+                            <Navbar />
+                        </Suspense>
+
+                        <Suspense
+                            fallback={
+                                <div className="h-11 animate-pulse border-y border-green-100 bg-green-50" />
+                            }
+                        >
+                            <PriceTicker />
+                        </Suspense>
                     </>
                 </SiteChromeVisibility>
 
