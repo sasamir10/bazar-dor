@@ -1,13 +1,12 @@
+import { HeroSection } from "@/components/home/hero-section";
+
 export default function Home() {
     return (
-        <main className="flex min-h-screen items-center justify-center">
-            <div className="text-center">
-                <h1 className="text-4xl font-bold">বাজার দর</h1>
+        <main className="flex-1">
+            <HeroSection />
 
-                <p className="mt-3 text-gray-600">
-                    প্রয়োজনীয় পণ্যের দাম এক নজরে।
-                </p>
-            </div>
+            {/* All Products section will be added in Step 4 */}
+            <div id="সব-পণ্য" />
         </main>
     );
 }
