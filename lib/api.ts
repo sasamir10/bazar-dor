@@ -73,3 +73,43 @@ export async function getProducts(): Promise<Product[]> {
         return [];
     }
 }
+
+export async function getCategory(slug: string): Promise<Category | null> {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/categories/${encodeURIComponent(slug)}`,
+            { next: { revalidate: 3600 } },
+        );
+
+        if (!response.ok) return null;
+
+        const data: unknown = await response.json();
+
+        if (!data || typeof data !== "object") return null;
+
+        return data as Category;
+    } catch (error) {
+        console.error("Category fetching failed:", error);
+        return null;
+    }
+}
+
+export async function getProductsByCategory(slug: string): Promise<Product[]> {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/products?category=${encodeURIComponent(slug)}`,
+            { next: { revalidate: 300 } },
+        );
+
+        if (!response.ok) return [];
+
+        const data: unknown = await response.json();
+
+        if (!Array.isArray(data)) return [];
+
+        return data as Product[];
+    } catch (error) {
+        console.error("Category products fetching failed:", error);
+        return [];
+    }
+}
