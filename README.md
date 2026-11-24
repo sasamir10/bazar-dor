@@ -264,5 +264,5 @@ The deployed application should also be tested for authentication, OAuth sign-in
 
 **Sabbir Ahmed Samir**
 
-- GitHub: [@your-username](https://github.com/sasamir10)
-- LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/sabbirahmed10)
+- GitHub: [@sasamir10](https://github.com/sasamir10)
+- LinkedIn: [Sabbir Ahmed Samir](https://www.linkedin.com/in/sabbirahmed10)
