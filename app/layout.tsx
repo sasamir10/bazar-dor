@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { NavbarVisibility } from "@/components/layout/navbar-visibility";
+import { PriceTicker } from "@/components/layout/price-ticker";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <body className="min-h-full flex flex-col">
                 <NavbarVisibility>
                     <Navbar />
+                    <PriceTicker />
                 </NavbarVisibility>
 
                 {children}

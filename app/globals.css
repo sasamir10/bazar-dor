@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@keyframes bazardor-marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.bazardor-ticker-track {
+    animation: bazardor-marquee 60s linear infinite;
+}
+
+.bazardor-ticker:hover .bazardor-ticker-track {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bazardor-ticker-track {
+        animation: none;
+    }
+}
