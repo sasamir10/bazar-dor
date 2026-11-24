@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -21,6 +21,38 @@ export default function SignInPage() {
     const [socialLoading, setSocialLoading] = useState<SocialProvider | null>(
         null,
     );
+
+    const getCallbackURL = () => {
+        const params = new URLSearchParams(window.location.search);
+        const redirectTo = params.get("callbackURL");
+
+        if (redirectTo?.startsWith("/") && !redirectTo.startsWith("//")) {
+            return redirectTo;
+        }
+
+        return "/";
+    };
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        const reason = params.get("reason");
+
+        if (reason === "unauthorized") {
+            toast.error("এই পেজটি দেখতে হলে আগে সাইন ইন করুন।");
+        }
+
+        // Prevent the same toast from appearing again on refresh.
+        params.delete("reason");
+
+        const remainingQuery = params.toString();
+
+        window.history.replaceState(
+            null,
+            "",
+            `${window.location.pathname}${remainingQuery ? `?${remainingQuery}` : ""}`,
+        );
+    }, []);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -46,7 +78,7 @@ export default function SignInPage() {
             toast.success("সফলভাবে লগইন হয়েছে!");
 
             setTimeout(() => {
-                router.push("/");
+                router.push(getCallbackURL());
             }, 1200);
         } catch {
             toast.error("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
@@ -61,7 +93,7 @@ export default function SignInPage() {
 
             const { error } = await authClient.signIn.social({
                 provider,
-                callbackURL: "/",
+                callbackURL: getCallbackURL(),
             });
 
             if (error) {
